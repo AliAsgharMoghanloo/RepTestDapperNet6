@@ -1,0 +1,142 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+ 
+
+
+<h1>   product</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form  >
+            <h2>Create  product.</h2>
+            <hr>
+            <div class="form-floating m-1">
+                <input class="form-control" type="text" id="Id" name="Id">
+                <label for="Id">Id</label>
+             </div>
+            <div class="form-floating m-1">
+                <input class="form-control" type="text" id="Name" name="Name">
+                <label for="Name">Name</label>
+             </div>
+            <div class="form-floating m-1">
+                <input class="form-control" type="text" id="CountP" name="CountP">
+                <label for="CountP">CountP</label>
+            </div>
+            <div class="form-floating m-1">
+                <input class="form-control" type="number" id="Price" name="Price">
+                <label for="Price">Price</label>
+            </div>
+            <div class="form-floating m-1">
+                <input class="form-control" type="text" id="DateTimeUpdate" name="DateTimeUpdate">
+                <label for="DateTimeUpdate">DateTimeUpdate</label>
+            </div>
+            
+            
+           
+            @*<input name="__RequestVerificationToken" type="hidden" value="CfDJ8DfC6ndulSdFnJxG4QxCZBGIOwZZyD8fzO0il5trywe6pMtuY0gH8js7acl9pJAPTYTSOfpc-grDEKloagK0RbEIbVSlia9J2xOujIiTMYthwISqQxnjtgcbcUzifgT5SRbguasTZZt6-TJowH71qbo">*@
+        </form>
+           </div>
+    <div class="col-md-6 col-md-offset-2">
+        <button onclick="getfirst()" class="w-100 m-1 btn btn-lg btn-primary">getfirst  product</button>
+        <button onclick="add()" class="w-100 m-1 btn btn-lg btn-primary">add  product</button>
+        <button onclick="Update()" class="w-100 m-1 btn btn-lg btn-primary">Update  product</button>
+        <button onclick="Deleted()" class="w-100 m-1 btn btn-lg btn-primary">Deleted  product</button>
+        <button onclick="getall()" class="w-100 m-1 btn btn-lg btn-primary">GetAll  product</button>
+    </div>
+</div>
+
+
+
+
+@section Scripts{
+    <script>
+      function Id(){return  $('#Id').val(); }
+      function Name(){return  $('#Name').val(); }
+      function CountP(){return  $('#CountP').val(); }
+      function Price(){return  $('#Price').val(); }
+      function DateTimeUpdate(){return  $('#DateTimeUpdate').val(); }
+       function SetModel(model){
+           $('#Id').val(model.id);
+           $('#Name').val(model.name);
+           $('#CountP').val(model.countP);
+           $('#Price').val(model.price);
+           $('#DateTimeUpdate').val(model.dateTimeUpdate);
+          
+         
+       }
+
+        function getall(){
+            $.ajax({ method: 'get', url: '/api/product/getall' }).then(function (res) {
+                console.log('---getall--', res);
+
+            });
+        }
+        function date(){
+            let ss = new Date();
+            console.log('---alio--', ss);
+        }
+
+        function getfirst() {
+             console.log('---getfirst--- $(#Id)--', $('#Id'));
+            //let id = $('#Id')[0].value;
+            console.log('---getfirst---id--', Id());
+
+            $.ajax({ method: 'get', url: '/api/product/getfirst?Id=' + Id() }).then(function (res) {
+                console.log('---getfirst--', res);
+                SetModel(res);
+            });
+        }
+
+        //!DeleteItem   
+        function Deleted() {
+            $.ajax({ method: 'Delete', url: '/api/product/DeleteItem?Id=' + Id() }).then(function (res) {
+                console.log('---Deleted--', res);
+
+            });
+        }
+
+        //!DeleteItemS   ????
+        function DeletedList() {
+            $.ajax({ method: 'Delete', url: '/api/product/DeleteItems?Id=' + Id() }).then(function (res) {
+                console.log('---Deleted--', res);
+
+            });
+        }
+
+        function add(){
+            let data={
+                Name: Name(),
+                CountP: CountP(),
+                Price: Price(),
+                DateTimeUpdate: DateTimeUpdate()
+            };
+            console.log('---Add--data--', data);
+            $.ajax({ method: 'post', url: '/api/product/add', data:JSON.stringify(data), contentType: 'application/json' }).then(function (res) {
+                console.log('---add--', res);
+
+            });
+        }
+        function Update() {
+
+            let data = {
+                Id: Id(),
+                Name: Name(),
+                CountP: CountP(),
+                Price: Price(),
+                DateTimeUpdate: DateTimeUpdate()
+            };
+            console.log('---update---data--', data);
+
+            $.ajax({ method: 'PUT', url: '/api/product/update', data:  JSON.stringify(data), contentType:'application/json'})
+            .then(function (res) {
+                console.log('---update--', res);
+
+            });
+
+        }
+      
+
+    </script>
+
+}
