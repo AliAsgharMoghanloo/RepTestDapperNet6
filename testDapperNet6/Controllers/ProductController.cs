@@ -79,7 +79,7 @@ namespace testDapperNet6.Controllers
         {
             try
             {
-
+                //test git 2
                 var result = await _UOK.Product.DeleteItemAsync(Id);
                 if (result > 0)
                     return Ok(result);
